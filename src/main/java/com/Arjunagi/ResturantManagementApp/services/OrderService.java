@@ -5,6 +5,7 @@ import com.Arjunagi.ResturantManagementApp.models.UserAuthToken;
 import com.Arjunagi.ResturantManagementApp.models.dto.AuthInpDto;
 import com.Arjunagi.ResturantManagementApp.models.order.FoodOrder;
 import com.Arjunagi.ResturantManagementApp.models.order.OrderStatus;
+import com.Arjunagi.ResturantManagementApp.models.user.Role;
 import com.Arjunagi.ResturantManagementApp.reposotories.IOrderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,5 +49,26 @@ public class OrderService {
         UserAuthToken userAuthToken=userAuthTokenService.getUserAuthToken(authInpDto);
         if(userAuthToken==null)return null;
         return orderRepo.findByUser(userAuthToken.getUser());
+    }
+    private FoodOrder getOrderIfValid(AuthInpDto authInpDto, Integer orderId){
+        UserAuthToken userAuthToken= userAuthTokenService.getUserAuthToken(authInpDto);
+        if(userAuthToken==null)return null;
+        FoodOrder order=orderRepo.findById(orderId).orElse(null);
+        if(order==null)return null;
+        if(order.getUser().equals(userAuthToken.getUser())||userAuthToken.getUser().getRole().equals(Role.ADMIN))
+            return order;
+        return null;
+    }
+
+    public String cancelOrder(AuthInpDto authInpDto, Integer orderId) {
+        FoodOrder order=getOrderIfValid(authInpDto,orderId);
+        if(order==null)return "wrong input";
+        order.setOrderStatus(OrderStatus.CANCEL);
+        orderRepo.save(order);
+        return "order canceled sucessfully";
+    }
+
+    public FoodOrder getOrderById(AuthInpDto authInpDto, Integer orderId) {
+        return getOrderIfValid(authInpDto,orderId);
     }
 }

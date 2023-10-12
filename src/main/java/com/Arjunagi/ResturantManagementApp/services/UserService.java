@@ -104,4 +104,12 @@ public class UserService {
         return userRepo.findAll();
 
     }
+
+    public String deleteUserById(AuthInpDto authInpDto, Integer id) {
+        if(isAdmin(authInpDto)){
+            userRepo.deleteById(id);
+            return "deleted sucessfully";
+        }
+        return "admin required";
+    }
 }

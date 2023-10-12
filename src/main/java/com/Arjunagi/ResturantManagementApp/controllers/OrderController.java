@@ -19,13 +19,24 @@ public class OrderController {
         return orderService.placeOrder(authInpDto,foodIds);
     }
 
-    @PutMapping("/order/{orderId}/status")
+    @PutMapping("/order/{orderId}/status/admin")
     public String updateOrderStatus(@RequestBody AuthInpDto authInpDto, @PathVariable Integer orderId, @RequestParam OrderStatus orderStatus){
         return orderService.updateOrderStatus(authInpDto,orderId,orderStatus);
     }
+    @PutMapping("/order/id/{orderId}")
+    public String cancelOrder(@RequestBody AuthInpDto authInpDto,@PathVariable Integer orderId){
+        return orderService.cancelOrder(authInpDto,orderId);
+    }
 
-    @GetMapping("/order/user")
+    @GetMapping("/orders")
     public List<FoodOrder> getOrders(@RequestBody AuthInpDto authInpDto){
         return orderService.getOrders(authInpDto);
     }
+    @GetMapping("/order/id/{orderId}")
+    public FoodOrder getOrderById(@RequestBody AuthInpDto authInpDto,@PathVariable Integer orderId){
+        return orderService.getOrderById(authInpDto,orderId);
+    }
+
+    
+
 }

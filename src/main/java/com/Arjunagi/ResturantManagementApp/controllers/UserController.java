@@ -43,4 +43,9 @@ public class UserController {
         return userService.getAll(authInpDto);
     }
 
+    @DeleteMapping("/user/id/{id}")
+    public String deleteUserById(@RequestBody AuthInpDto authInpDto,@PathVariable Integer id){
+        return userService.deleteUserById(authInpDto,id);
+    }
+
 }
