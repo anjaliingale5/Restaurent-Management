@@ -71,4 +71,12 @@ public class OrderService {
     public FoodOrder getOrderById(AuthInpDto authInpDto, Integer orderId) {
         return getOrderIfValid(authInpDto,orderId);
     }
+
+    public String deleteOrderById(AuthInpDto authInpDto, Integer orderId) {
+        if(userService.isAdmin(authInpDto)){
+            orderRepo.deleteById(orderId);
+            return "deleted sucessfully";
+        }
+        return "requested user don't have authority";
+    }
 }

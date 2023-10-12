@@ -23,6 +23,7 @@ public class FoodItem {
     private String description;
     private LocalDateTime creatingDateTime;
     private String imageUrl;
+    private Double price;
     @Transient
     public String getHtmlLink() {
         if (imageUrl != null) {
@@ -31,10 +32,11 @@ public class FoodItem {
         return "";
     }
 
-    public FoodItem(String title,String description,String imageUrl){
+    public FoodItem(String title,String description,Double price,String imageUrl){
         this.title=title;
         this.description=description;
         this.imageUrl=imageUrl;
+        this.price=price;
         creatingDateTime=LocalDateTime.now();
     }
 }

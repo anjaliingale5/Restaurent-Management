@@ -13,6 +13,7 @@ public class FoodDto {
     private String title;
     @NotBlank
     private String description;
+    private Double price;
     private String imageUrl;
     private AuthInpDto authInpDto;
 }

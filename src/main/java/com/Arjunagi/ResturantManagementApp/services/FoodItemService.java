@@ -19,6 +19,8 @@ public class FoodItemService {
     IFoodItemRepo foodItemRepo;
     @Autowired
     UserAuthTokenService userAuthTokenService;
+    @Autowired
+    UserService userService;
     private boolean isNotAValidUser(AuthInpDto authInpDto){
         UserAuthToken userAuthToken=userAuthTokenService.getUserAuthToken(authInpDto);
         if(userAuthToken==null)return true;
@@ -27,7 +29,7 @@ public class FoodItemService {
 
     public String addFood(FoodDto foodDto) {
         if(isNotAValidUser(foodDto.getAuthInpDto()))return "don't have privileges";
-        FoodItem foodItem=new FoodItem(foodDto.getTitle(),foodDto.getDescription(),foodDto.getImageUrl());
+        FoodItem foodItem=new FoodItem(foodDto.getTitle(),foodDto.getDescription(),foodDto.getPrice(),foodDto.getImageUrl());
         foodItemRepo.save(foodItem);
         return "added sucessfully";
     }
@@ -47,10 +49,11 @@ public class FoodItemService {
         }
     }
 
-    public String updateFoodById(AuthInpDto authInpDto, Integer foodItemId, String title, String description) {
-        if(isNullOrEmpty(title)&&isNullOrEmpty(description)) return "nothing to update";
+    public String updateFoodById(AuthInpDto authInpDto, Integer foodItemId, String title, String description, Double price) {
+        if(isNullOrEmpty(title)&&isNullOrEmpty(description)&&price==null) return "nothing to update";
         if(isNotAValidUser(authInpDto))return "don't have privileges";
         FoodItem foodItem=foodItemRepo.findById(foodItemId).orElseThrow();
+        if(price!=null)foodItem.setPrice(price);
         updateIfValid(title,this::isNullOrEmpty,foodItem::setTitle);
         updateIfValid(description,this::isNullOrEmpty,foodItem::setDescription);
         foodItemRepo.save(foodItem);
@@ -59,5 +62,13 @@ public class FoodItemService {
 
     public List<FoodItem> findByIds(List<Integer> foodIds) {
         return foodItemRepo.findAllById(foodIds);
+    }
+
+    public String deleteFood(AuthInpDto authInpDto, Integer id) {
+        if(userService.isAdmin(authInpDto)){
+            foodItemRepo.deleteById(id);
+            return "deleted sucessfully";
+        }
+        return "user don't have authorization";
     }
 }
