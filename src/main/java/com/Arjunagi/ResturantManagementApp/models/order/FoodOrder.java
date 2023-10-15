@@ -18,8 +18,10 @@ public class FoodOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToMany
-    @JoinColumn(name = "fkFoodId")
+    @ManyToMany
+    @JoinTable(name = "order_food_fk_table",
+            joinColumns = @JoinColumn(name = "fk_order") ,
+            inverseJoinColumns = @JoinColumn(name = "fk_food"))
     private List<FoodItem> foodItemList;
     private Integer quantity;
     @ManyToOne
