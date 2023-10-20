@@ -18,21 +18,21 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping("/order") // any register user
-    public String placeOrder( @RequestBody AuthInpDto authInpDto, @RequestParam List<Integer> foodIds){
+    public String placeOrder( @RequestBody @Valid AuthInpDto authInpDto, @RequestParam List<Integer> foodIds){
         return orderService.placeOrder(authInpDto,foodIds);
     }
 
     @PutMapping("/order/{orderId}/status/admin") // the status can be alter by admin
-    public String updateOrderStatus( @RequestBody AuthInpDto authInpDto, @PathVariable Integer orderId, @RequestParam OrderStatus orderStatus){
+    public String updateOrderStatus( @RequestBody @Valid  AuthInpDto authInpDto, @PathVariable Integer orderId, @RequestParam OrderStatus orderStatus){
         return orderService.updateOrderStatus(authInpDto,orderId,orderStatus);
     }
     @PutMapping("/order/id/{orderId}") //user can cancel users order admin can cancel any
-    public String cancelOrder( @RequestBody AuthInpDto authInpDto,@PathVariable Integer orderId){
+    public String cancelOrder( @RequestBody @Valid AuthInpDto authInpDto,@PathVariable Integer orderId){
         return orderService.cancelOrder(authInpDto,orderId);
     }
 
     @GetMapping("/orders") // all the orders for the particular user
-    public List<FoodOrder> getOrders( @RequestBody AuthInpDto authInpDto){
+    public List<FoodOrder> getOrders( @RequestBody @Valid AuthInpDto authInpDto){
         return orderService.getOrders(authInpDto);
     }
     @GetMapping("/order/id/{orderId}")//admin can get All user can get those which belongs to user
@@ -41,7 +41,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/order/id/{orderId}/admin")
-    public String deleteOrderById( AuthInpDto authInpDto,@PathVariable Integer orderId){
+    public String deleteOrderById( @RequestBody @Valid  AuthInpDto authInpDto,@PathVariable Integer orderId){
         return orderService.deleteOrderById(authInpDto,orderId);
     }
 

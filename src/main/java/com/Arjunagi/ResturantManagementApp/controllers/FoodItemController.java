@@ -26,11 +26,11 @@ public class FoodItemController {
         return foodItemService.getAll();
     }
     @PutMapping("/food/id/{id}/admin")
-    public String updateFoodById(@RequestBody AuthInpDto authInpDto,@PathVariable(name = "id") Integer foodItemId,@RequestParam(required = false) String title,@RequestParam(required = false) String description,@RequestParam(required = false) Double price){
+    public String updateFoodById(@RequestBody @Valid AuthInpDto authInpDto,@PathVariable(name = "id") Integer foodItemId,@RequestParam(required = false) String title,@RequestParam(required = false) String description,@RequestParam(required = false) Double price){
         return foodItemService.updateFoodById(authInpDto,foodItemId,title,description,price);
     }
     @DeleteMapping("/food/id/{id}/admin")
-    public String deleteFood(@RequestBody AuthInpDto authInpDto,@PathVariable Integer id){
+    public String deleteFood(@RequestBody @Valid AuthInpDto authInpDto,@PathVariable Integer id){
         return foodItemService.deleteFood(authInpDto,id);
     }
 

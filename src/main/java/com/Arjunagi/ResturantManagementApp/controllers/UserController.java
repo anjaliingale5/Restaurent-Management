@@ -32,22 +32,22 @@ public class UserController {
     }
 
     @DeleteMapping("/user/signout")
-    private String logoutUser( @RequestBody AuthInpDto authInpDto){
+    public String logoutUser( @RequestBody @Valid  AuthInpDto authInpDto){
         return userService.logoutUser(authInpDto);
     }
 
     @GetMapping("/user")
-    public User getUser( @RequestBody AuthInpDto authInpDto){
+    public User getUser( @RequestBody @Valid  AuthInpDto authInpDto){
         return userService.getUser(authInpDto);
     }
 
     @GetMapping("/users") //admin can only acess it
-    public List<User> getAll( @RequestBody AuthInpDto authInpDto){
+    public List<User> getAll( @RequestBody @Valid  AuthInpDto authInpDto){
         return userService.getAll(authInpDto);
     }
 
     @DeleteMapping("/user/id/{id}/admin")
-    public String deleteUserById( @RequestBody AuthInpDto authInpDto,@PathVariable Integer id){
+    public String deleteUserById( @RequestBody @Valid  AuthInpDto authInpDto,@PathVariable Integer id){
         return userService.deleteUserById(authInpDto,id);
     }
 
